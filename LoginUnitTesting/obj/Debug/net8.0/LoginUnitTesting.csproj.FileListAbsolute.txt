@@ -412,3 +412,4 @@ C:\Users\hoang\CMC_L\8th\KTCK\LoginUnitTesting\LoginUnitTesting\obj\Debug\net8.0
 C:\Users\hoang\CMC_L\8th\KTCK\LoginUnitTesting\LoginUnitTesting\obj\Debug\net8.0\LoginUni.938EC2CF.Up2Date
 C:\Users\hoang\CMC_L\8th\KTCK\LoginUnitTesting\LoginUnitTesting\obj\Debug\net8.0\LoginUnitTesting.genruntimeconfig.cache
 C:\Users\hoang\CMC_L\8th\KTCK\LoginUnitTesting\LoginUnitTesting\obj\Debug\net8.0\ref\LoginUnitTesting.dll
+C:\Users\hoang\CMC_L\8th\KTCK\LoginUnitTesting\LoginUnitTesting\obj\Debug\net8.0\LoginUnitTesting.sourcelink.json

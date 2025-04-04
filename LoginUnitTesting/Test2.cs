@@ -140,6 +140,56 @@ namespace LoginUnitTesting
             Assert.That(result, Is.Null);
         }
 
+        // Username trống
+        [Test]
+        public async Task Authenticate_WithEmptyUsername_ReturnsNull()
+        {
+            // Arrange
+            var username = "";
+            var password = "testpass";
+
+            var mockCursor = new Mock<IAsyncCursor<UsersModel>>();
+            mockCursor.SetupSequence(_ => _.MoveNextAsync(default))
+                .ReturnsAsync(false);
+
+            _mockUsersCollection.Setup(x => x.FindAsync(
+                It.IsAny<FilterDefinition<UsersModel>>(),
+                It.IsAny<FindOptions<UsersModel, UsersModel>>(),
+                default))
+                .ReturnsAsync(mockCursor.Object);
+
+            // Act
+            var result = await _authService.Authenticate(username, password);
+
+            // Assert
+            Assert.That(result, Is.Null);
+        }
+
+        // Username null
+        [Test]
+        public async Task Authenticate_WithNullUsername_ReturnsNull()
+        {
+            // Arrange
+            string? username = null;
+            var password = "testpass";
+
+            var mockCursor = new Mock<IAsyncCursor<UsersModel>>();
+            mockCursor.SetupSequence(_ => _.MoveNextAsync(default))
+                .ReturnsAsync(false);
+
+            _mockUsersCollection.Setup(x => x.FindAsync(
+                It.IsAny<FilterDefinition<UsersModel>>(),
+                It.IsAny<FindOptions<UsersModel, UsersModel>>(),
+                default))
+                .ReturnsAsync(mockCursor.Object);
+
+            // Act
+            var result = await _authService.Authenticate(username, password);
+
+            // Assert
+            Assert.That(result, Is.Null);
+        }
+
         // Sai mật khẩu
         [Test]
         public async Task Authenticate_WithInvalidPassword_ReturnsNull()
@@ -147,6 +197,84 @@ namespace LoginUnitTesting
             // Arrange
             var username = "testuser";
             var password = "wrongpass";
+            var hashedPassword = BCryptNet.HashPassword("correctpass");
+
+            var testUser = new UsersModel
+            {
+                Id = "123",
+                UserName = username,
+                Password = hashedPassword,
+                Role = "User",
+                UserCode = "TEST001", // Added required field
+                FullName = "Test User", // Added required field
+                AccountStatus = "Active" // Added required field
+            };
+
+            var mockCursor = new Mock<IAsyncCursor<UsersModel>>();
+            mockCursor.SetupSequence(_ => _.MoveNextAsync(default))
+                .ReturnsAsync(true)
+                .ReturnsAsync(false);
+            mockCursor.Setup(_ => _.Current).Returns(new[] { testUser });
+
+            _mockUsersCollection.Setup(x => x.FindAsync(
+                It.IsAny<FilterDefinition<UsersModel>>(),
+                It.IsAny<FindOptions<UsersModel, UsersModel>>(),
+                default))
+                .ReturnsAsync(mockCursor.Object);
+
+            // Act
+            var result = await _authService.Authenticate(username, password);
+
+            // Assert
+            Assert.That(result, Is.Null);
+        }
+
+        // mật khẩu rỗng
+        [Test]
+        public async Task Authenticate_WithEmptyPassword_ReturnsNull()
+        {
+            // Arrange
+            var username = "testuser";
+            var password = "";
+            var hashedPassword = BCryptNet.HashPassword("correctpass");
+
+            var testUser = new UsersModel
+            {
+                Id = "123",
+                UserName = username,
+                Password = hashedPassword,
+                Role = "User",
+                UserCode = "TEST001", // Added required field
+                FullName = "Test User", // Added required field
+                AccountStatus = "Active" // Added required field
+            };
+
+            var mockCursor = new Mock<IAsyncCursor<UsersModel>>();
+            mockCursor.SetupSequence(_ => _.MoveNextAsync(default))
+                .ReturnsAsync(true)
+                .ReturnsAsync(false);
+            mockCursor.Setup(_ => _.Current).Returns(new[] { testUser });
+
+            _mockUsersCollection.Setup(x => x.FindAsync(
+                It.IsAny<FilterDefinition<UsersModel>>(),
+                It.IsAny<FindOptions<UsersModel, UsersModel>>(),
+                default))
+                .ReturnsAsync(mockCursor.Object);
+
+            // Act
+            var result = await _authService.Authenticate(username, password);
+
+            // Assert
+            Assert.That(result, Is.Null);
+        }
+
+        // mật khẩu null
+        [Test]
+        public async Task Authenticate_WithNullPassword_ReturnsNull()
+        {
+            // Arrange
+            var username = "testuser";
+            string? password = null;
             var hashedPassword = BCryptNet.HashPassword("correctpass");
 
             var testUser = new UsersModel
